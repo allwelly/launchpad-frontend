@@ -10,8 +10,8 @@ You and your friends are developing a new start-up called DRUBER, a drone-based 
 There are several ways to address this qusetion.
 1. **Using CSS or SASS/SCSS**
 
-Assuming that the start up used the trusty ol HTML and CSS to build their website, and used platforms such as Drupal or Wordpress to create their website, 
-They could modify their code by adding CSS properties for mobile view, then add @media queries for other platforms such as tablets or desktop computers. This follows the "mobile first" approach by making the base css to work on mobile and media queries for sizes bigger than mobile view.
+Assuming that the start up used the trusty ol' HTML and CSS to build their website, and used platforms such as Drupal or Wordpress to create their 
+website, They could modify their code by adding CSS properties for mobile view, then add @media queries for other platforms such as tablets or desktop computers. This follows the "mobile first" approach by making the base css to work on mobile and media queries for sizes bigger than mobile view.
 
 e.g displaying cards stacked on top of each other for mobile vs side-by-side for desktop
 
@@ -36,9 +36,10 @@ example css:
   }
 }
 ```
+
 2. **Using React JS**
 
-Assuming the start-up decided to use an up-to-date framework such as React JS, we can still build on to the knowledge we know about CSS to build a responsive design for DRUBER. First, they can add a useState hook to keep track of the state of the width as well as the function setWidth. Then we use eventListener to track window size that has an event called 'resize' and callback function that updates the variable for 'width' by taking the current inner width of the window. This improves responsivity to include sizes in between 750 px and 1920 px. useEffect can be used to add and remove event listener after event occurs. once the width state is updated, they can then use conditional statements to set the style of the components depending on the width state.
+Assuming the start-up decided to use an up-to-date framework such as React JS, we can still build onto the knowledge we know about CSS to build a responsive design for DRUBER. First, they can add a useState hook to keep track of the state of the width as well as the function setWidth. Then we use eventListener to track window size that has an event called 'resize' and callback function that updates the variable for 'width' by taking the current inner width of the window. This improves responsiveness by including sizes inbetween 750px and 1920px. useEffect can be used to add and remove event listener after event occurs. once the width state is updated, they can then use conditional statements to set the style of the components depending on the width state.
 
 event listener:
 ```
@@ -60,16 +61,43 @@ function App() {
     }
 }
 ```
-
 adding to component:
 ```
 const responsive = {
-  onMobile: width <= 750
+  notMobile: width > 800,
 }
 
 return (
   <>
-    <Cards onMobile={responsive.onMobile} style={cardsStyle}/>
+    <Cards notMobile={responsive.notMobile} style={cardsStyle}/>
+    <Main />
+  </>
+)
+```
+styling:
+```
+const cardsStyle = {
+  display: 'flex',
+  flexDirection: notMobile ? 'row' : 'column',
+}
+```
+
+3. **Using React JS Module**
+
+The third and most preferrable option is to use an existing module for React JS such as [react-responsive](https://www.npmjs.com/package/react-responsive) 
+to add specific queries for DRUBER. the base CSS style should still be for mobile, but they can utilise media query to change the display of their components. Using the module allows for a simpler and neater code implementation.
+
+using the module:
+```
+import React from 'react'
+import { useMediaQuery } from 'react-responsive'
+
+const Example = () => {
+  const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 })
+
+return (
+  <>
+    <Cards notMobile={isDesktopOrLaptop} style={cardsStyle}/>
     <Main />
   </>
 )
@@ -79,13 +107,9 @@ styling:
 ```
 const cardsStyle = {
   display: 'flex',
-  flexDirection: onMobile ? 'column' : 'row',
+  flexDirection: notMobile ? 'row' : 'column',
 }
 ```
-3. **Using React JS Module**
-
-The third and most preferrable option is to use an existing module for React JS such as [react-responsive](https://www.npmjs.com/package/react-responsive) 
-to add specific queries for DRUBER. the base CSS style should still be for mobile, but they can utilise <MediaQuery>
 
 Lastly, the team needs to be debriefed on the importance of "mobile first" approach in web development to avoid issues such as this one to arise in the future.
 
