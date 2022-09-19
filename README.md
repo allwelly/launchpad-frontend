@@ -30,7 +30,7 @@ example css:
   flex-direction: column;
 }
 
-@media screen only and (min-width 1920) {
+@media screen only and (min-width 1920px) {
   .cards {
     flex-direction: row;
   }
@@ -40,6 +40,48 @@ example css:
 
 Assuming the start-up decided to use an up-to-date framework such as React JS, we can still build on to the knowledge we know about CSS to build a responsive design for DRUBER. First, they can add a useState hook to keep track of the state of the width as well as the function setWidth. Then we use eventListener to track window size that has an event called 'resize' and callback function that updates the variable for 'width' by taking the current inner width of the window. This improves responsivity to include sizes in between 750 px and 1920 px. useEffect can be used to add and remove event listener after event occurs. once the width state is updated, they can then use conditional statements to set the style of the components depending on the width state.
 
+event listener:
+```
+import React, { useState, useEffect } from 'react'
+
+function App() {
+  const [width, setWidth] = useState(0)
+   useEffect(() => { 
+
+     updateDimensions();
+
+     window.addEventListener(“resize”, updateDimensions);
+     return () => 
+       window.removeEventListener(“resize”,updateDimensions);
+    }, [])
+    const updateDimensions = () => {
+      const width = window.innerWidth
+      setWidth(width)
+    }
+}
+```
+
+adding to component:
+```
+const responsive = {
+  onMobile: width <= 750
+}
+
+return (
+  <>
+    <Cards onMobile={responsive.onMobile} style={cardsStyle}/>
+    <Main />
+  </>
+)
+```
+
+styling:
+```
+const cardsStyle = {
+  display: 'flex',
+  flexDirection: onMobile ? 'column' : 'row',
+}
+```
 3. **Using React JS Module**
 
 The third and most preferrable option is to use an existing module for React JS such as [react-responsive](https://www.npmjs.com/package/react-responsive) 
